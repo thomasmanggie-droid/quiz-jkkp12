@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Quiz JKKP 12</title>
-
 <style>
 body {
     font-family: Arial;
@@ -12,6 +11,14 @@ body {
     color:#fff;
     text-align:center;
     padding:20px;
+}
+input { 
+    padding:8px; 
+    margin:5px; 
+    border-radius:5px; 
+    border:none; 
+    width:80%; 
+    max-width:300px; 
 }
 button {
     display:block;
@@ -26,9 +33,7 @@ button {
 button.correct { background:#4CAF50; color:#fff; }
 button.wrong { background:#f44336; color:#fff; }
 button.default { background:#fff; color:#2a5298; }
-
 #nextBtn { display:none; background:orange; color:#000; }
-
 .note {
     background:rgba(0,0,0,0.4);
     padding:10px;
@@ -38,7 +43,6 @@ button.default { background:#fff; color:#2a5298; }
 }
 </style>
 </head>
-
 <body>
 
 <!-- INTRO -->
@@ -65,44 +69,44 @@ button.default { background:#fff; color:#2a5298; }
 </div>
 
 <script>
-
 const quiz = [
-{
-q:"Apakah fungsi utama JKKP?",
-a:[
-"Menjaga keselamatan awam",
-"Memastikan keselamatan dan kesihatan pekerja",
-"Mengawal kesihatan pekerja sahaja",
-"Mengenakan tindakan undang-undang"
-],
-correct:1,
-note:"JKKP fokus kepada keselamatan dan kesihatan pekerja di tempat kerja, bukan keselamatan awam."
-},
-{
-q:"JKKP berada di bawah kementerian mana?",
-a:[
-"Kementerian Kerja Raya",
-"Kementerian Sumber Manusia",
-"Kementerian Perumahan",
-"Kementerian Usahawan"
-],
-correct:1,
-note:"JKKP berada di bawah Kementerian Sumber Manusia."
-},
-{
-q:"Apakah peranan utama JKKP dalam penguatkuasaan?",
-a:[
-"Mengurus projek",
-"Memastikan pematuhan keselamatan",
-"Mengurus gaji pekerja",
-"Mengawal harga bahan"
-],
-correct:1,
-note:"JKKP memastikan pematuhan kepada undang-undang keselamatan."
-},
+  // 1-5: Pengenalan JKKP
+  {q:"Apakah fungsi utama JKKP?", a:["Menjaga keselamatan awam","Memastikan keselamatan dan kesihatan pekerja","Mengawal kesihatan pekerja sahaja","Mengenakan tindakan undang-undang"], correct:1, note:"JKKP fokus keselamatan & kesihatan pekerja, bukan keselamatan awam."},
+  {q:"JKKP berada di bawah kementerian mana?", a:["Kementerian Kerja Raya","Kementerian Sumber Manusia","Kementerian Perumahan","Kementerian Usahawan"], correct:1, note:"JKKP berada di bawah Kementerian Sumber Manusia."},
+  {q:"Apakah peranan utama JKKP dalam penguatkuasaan?", a:["Mengurus projek","Memastikan pematuhan keselamatan","Mengurus gaji pekerja","Mengawal harga bahan"], correct:1, note:"JKKP memastikan pematuhan undang-undang keselamatan."},
+  {q:"Skop tanggungjawab JKKP termasuk?", a:["Mengurus semua operasi projek","Memastikan pematuhan keselamatan & kesihatan","Mengawal aktiviti ekonomi pekerja","Mengurus kebajikan pekerja sahaja"], correct:1, note:"Fokus JKKP adalah keselamatan & kesihatan di tempat kerja."},
+  {q:"Perbezaan JKKP dan pengurusan projek pembinaan?", a:["Tiada perbezaan","JKKP fokus keselamatan, projek fokus pelaksanaan","JKKP urus pekerja, projek urus undang-undang","JKKP terlibat selepas projek selesai"], correct:1, note:"JKKP fokus keselamatan & kesihatan, projek fokus pelaksanaan kerja."},
 
-// 👉 Tambah semua 30 soalan di sini ikut format sama
+  // 6-10: PATK1 / MyKKP
+  {q:"Siapakah PATK1 dalam MyKKP?", a:["Penyelia tapak","Wakil klien / pemilik projek","Pegawai keselamatan","Subkontraktor"], correct:1, note:"PATK1 ialah wakil klien yang mendaftarkan projek."},
+  {q:"Peranan utama PATK1?", a:["Menyelia kerja harian","Mendaftarkan projek sebelum kerja dimulakan","Menguatkuasakan keselamatan","Mengurus peralatan tapak"], correct:1, note:"PATK1 mendaftarkan projek dalam MyKKP."},
+  {q:"Siapa bertanggungjawab betulkan maklumat projek?", a:["Pegawai JKKP","PATK1","Kontraktor utama","Mana-mana pihak"], correct:1, note:"PATK1 bertanggungjawab update maklumat yang didaftarkan."},
+  {q:"Jika pematuhan keselamatan gagal, siapa dipertanggungjawabkan?", a:["PATK1 sahaja","Kontraktor sahaja","Kedua-dua pihak ikut skop","JKKP"], correct:2, note:"Tanggungjawab bergantung kepada skop kerja masing-masing."},
+  {q:"Peranan PATK1 lebih tertumpu kepada?", a:["Pelaksanaan fizikal","Pendaftaran & pengisytiharan projek","Pengurusan keselamatan harian","Penyeliaan operasi"], correct:1, note:"PATK1 fokus pada pendaftaran dan pengisytiharan projek."},
 
+  // 11-20: Akta & Keperluan JKKP12
+  {q:"Apakah maksud JKKP12?", a:["Dokumen kawalan keselamatan","Borang pendaftaran tapak bina","Laporan audit keselamatan","Permit kerja harian"], correct:1, note:"JKKP12 ialah borang pendaftaran tapak bina."},
+  {q:"Bilakah borang JKKP12 perlu dikemukakan?", a:["Selepas kerja selesai","Sebelum kerja dimulakan","Semasa audit","Selepas kemalangan"], correct:1, note:"Borang perlu dikemukakan sebelum kerja bermula."},
+  {q:"Implikasi kerja tanpa JKKP12?", a:["Tidak kesalahan kecil","Pelanggaran peraturan boleh dikenakan tindakan","Bergantung jenis kerja","Hanya amaran"], correct:1, note:"Kerja tanpa pendaftaran JKKP12 boleh dikenakan tindakan."},
+  {q:"Siapa bertanggungjawab keselamatan tapak?", a:["Klien","Kontraktor utama","Penyelia tapak","Semua pekerja"], correct:3, note:"Keselamatan tapak tanggungjawab semua pihak tetapi major: kontraktor & PATK1."},
+  {q:"Tempoh projek dilanjutkan, tindakan JKKP12?", a:["Tiada tindakan","Maklumat perlu dikemas kini","Hanya maklum dalaman","Tunggu arahan JKKP"], correct:1, note:"Maklumat pendaftaran perlu dikemaskini."},
+  {q:"Tujuan utama pendaftaran JKKP12?", a:["Rekod maklumat","Pemantauan keselamatan pekerja","Audit kewangan","Kawalan bahan binaan"], correct:1, note:"Tujuan JKKP12 ialah pemantauan keselamatan & kesihatan pekerja."},
+  {q:"Lokasi projek berubah, apa perlu dibuat?", a:["Tiada tindakan","Kemas kini lokasi dalam JKKP12","Tunggu pemeriksaan","Maklum pekerja"], correct:1, note:"Lokasi baru perlu dikemaskini dalam sistem."},
+  {q:"Subkontraktor langgar peraturan, siapa dikenakan tindakan?", a:["Subkontraktor sahaja","Kontraktor sahaja","Kedua-dua pihak","Tiada tindakan"], correct:2, note:"Tindakan boleh dikenakan kepada kedua-dua pihak ikut skop."},
+  {q:"PTW gantikan keperluan JKKP12?", a:["Ya","Tidak, fungsi berbeza","Bergantung projek","Hanya kerja berisiko tinggi"], correct:1, note:"PTW dan JKKP12 berbeza fungsi."},
+  {q:"Projek kecil dikecualikan JKKP12?", a:["Ya","Tidak, semua perlu daftar","Bergantung pekerja","Bergantung tempoh"], correct:1, note:"Semua projek pembinaan wajib didaftarkan."},
+
+  // 21-30: Cepu Emas / tricky
+  {q:"Jika pekerja tiada PPE, siapa bertanggungjawab?", a:["Pekerja sahaja","Kontraktor sahaja","PATK1 & kontraktor","JKKP"], correct:2, note:"Kontraktor dan PATK1 bertanggungjawab memastikan pekerja pakai PPE."},
+  {q:"Apakah tujuan audit tapak bina?", a:["Pastikan gaji dibayar","Pastikan keselamatan & kesihatan pekerja","Urus bahan binaan","Semua di atas"], correct:1, note:"Audit tapak untuk keselamatan & kesihatan pekerja."},
+  {q:"Dokumen mana perlu disimpan di tapak?", a:["JKKP12","PTW","Laporan audit","Semua di atas"], correct:3, note:"Semua dokumen keselamatan & pendaftaran wajib disimpan di tapak."},
+  {q:"Jika PATK1 gagal daftar, apa tindakan JKKP?", a:["Tiada tindakan","Amaran sahaja","Tindakan undang-undang boleh dikenakan","Tunggu projek selesai"], correct:2, note:"PATK1 boleh dikenakan tindakan jika gagal daftar."},
+  {q:"Borang JKKP12 mengandungi?", a:["Maklumat projek & kontraktor","Senarai pekerja sahaja","Hanya lokasi tapak","Hanya peralatan"], correct:0, note:"Borang mengandungi info projek & kontraktor."},
+  {q:"Bila pendaftaran JKKP12 tamat tempoh?", a:["Tiada tempoh","Sampai projek selesai","Setiap 6 bulan","Setiap tahun"], correct:1, note:"Pendaftaran sah sehingga projek selesai."},
+  {q:"Siapa boleh semak JKKP12?", a:["Pekerja tapak","JKKP sahaja","PATK1 & JKKP","Orang awam"], correct:2, note:"PATK1 & pegawai JKKP boleh semak."},
+  {q:"Jika berlaku kemalangan, apa perlu dilakukan?", a:["Tidak buat apa-apa","Laporkan kepada JKKP","Tunggu laporan akhir","Hanya maklum kontraktor"], correct:1, note:"Kemalangan mesti dilaporkan kepada JKKP."},
+  {q:"Apakah penalti gagal daftar JKKP12?", a:["Tiada penalti","Denda & tindakan undang-undang","Amaran lisan","Hanya penalti kontraktor"], correct:1, note:"Gagal daftar boleh dikenakan denda & tindakan undang-undang."},
+  {q:"Siapa wajib daftar projek di MyKKP?", a:["Klien / pemilik projek","Pekerja","Subkontraktor","JKKP"], correct:0, note:"Klien / pemilik projek wajib mendaftar projek."}
 ];
 
 let current=0;
@@ -157,10 +161,13 @@ function answer(i){
         }
     });
 
-    if(i===q.correct) score++;
-
-    document.getElementById("note").innerHTML=
-        `<div class="note">💡 ${q.note}</div>`;
+    if(i===q.correct) {
+        score++;
+        document.getElementById("note").innerHTML="";
+    } else {
+        document.getElementById("note").innerHTML=
+            `<div class="note">💡 ${q.note}</div>`;
+    }
 
     document.getElementById("nextBtn").style.display="block";
 }
@@ -192,7 +199,6 @@ function downloadCSV(){
     link.download="result.csv";
     link.click();
 }
-
 </script>
 
 </body>
