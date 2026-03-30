@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quiz JKKP 12</title>
+
+<style>
+body {
+    font-family: Arial;
+    background: linear-gradient(135deg,#1e3c72,#2a5298);
+    color:#fff;
+    text-align:center;
+    padding:20px;
+}
+button {
+    display:block;
+    width:80%;
+    max-width:400px;
+    margin:10px auto;
+    padding:12px;
+    border:none;
+    border-radius:8px;
+    cursor:pointer;
+}
+button.correct { background:#4CAF50; color:#fff; }
+button.wrong { background:#f44336; color:#fff; }
+button.default { background:#fff; color:#2a5298; }
+
+#nextBtn { display:none; background:orange; color:#000; }
+
+.note {
+    background:rgba(0,0,0,0.4);
+    padding:10px;
+    margin-top:10px;
+    border-radius:8px;
+    font-size:0.9em;
+}
+</style>
+</head>
+
+<body>
+
+<!-- INTRO -->
+<div id="intro">
+    <img src="logo_sarawak.png" width="100">
+    <img src="logo_jps.png" width="100">
+    <h1>Quiz JKKP 12</h1>
+
+    <input id="name" placeholder="Nama"><br>
+    <input id="dept" placeholder="Bahagian"><br>
+    <input id="email" placeholder="Email"><br>
+
+    <button onclick="startQuiz()">Mula</button>
+</div>
+
+<!-- QUIZ -->
+<div id="quiz" style="display:none;">
+    <h2 id="question"></h2>
+    <div id="answers"></div>
+    <div id="note"></div>
+    <button id="nextBtn" onclick="nextQuestion()">Next</button>
+    <p id="score"></p>
+    <button id="downloadBtn" style="display:none;" onclick="downloadCSV()">Download CSV</button>
+</div>
+
+<script>
+
+const quiz = [
+{
+q:"Apakah fungsi utama JKKP?",
+a:[
+"Menjaga keselamatan awam",
+"Memastikan keselamatan dan kesihatan pekerja",
+"Mengawal kesihatan pekerja sahaja",
+"Mengenakan tindakan undang-undang"
+],
+correct:1,
+note:"JKKP fokus kepada keselamatan dan kesihatan pekerja di tempat kerja, bukan keselamatan awam."
+},
+{
+q:"JKKP berada di bawah kementerian mana?",
+a:[
+"Kementerian Kerja Raya",
+"Kementerian Sumber Manusia",
+"Kementerian Perumahan",
+"Kementerian Usahawan"
+],
+correct:1,
+note:"JKKP berada di bawah Kementerian Sumber Manusia."
+},
+{
+q:"Apakah peranan utama JKKP dalam penguatkuasaan?",
+a:[
+"Mengurus projek",
+"Memastikan pematuhan keselamatan",
+"Mengurus gaji pekerja",
+"Mengawal harga bahan"
+],
+correct:1,
+note:"JKKP memastikan pematuhan kepada undang-undang keselamatan."
+},
+
+// 👉 Tambah semua 30 soalan di sini ikut format sama
+
+];
+
+let current=0;
+let score=0;
+let user={};
+let answered=false;
+
+function startQuiz(){
+    user.name=document.getElementById("name").value;
+    user.dept=document.getElementById("dept").value;
+    user.email=document.getElementById("email").value;
+
+    if(!user.name || !user.dept || !user.email){
+        alert("Sila isi semua maklumat");
+        return;
+    }
+
+    document.getElementById("intro").style.display="none";
+    document.getElementById("quiz").style.display="block";
+    loadQuestion();
+}
+
+function loadQuestion(){
+    answered=false;
+    document.getElementById("note").innerHTML="";
+    document.getElementById("nextBtn").style.display="none";
+
+    let q=quiz[current];
+    document.getElementById("question").innerHTML=(current+1)+". "+q.q;
+
+    let html="";
+    q.a.forEach((ans,i)=>{
+        html+=`<button class="default" onclick="answer(${i})">${ans}</button>`;
+    });
+
+    document.getElementById("answers").innerHTML=html;
+}
+
+function answer(i){
+    if(answered) return;
+    answered=true;
+
+    let q=quiz[current];
+    let btns=document.querySelectorAll("#answers button");
+
+    btns.forEach((b,index)=>{
+        if(index===q.correct){
+            b.classList.add("correct");
+        }
+        if(index===i && i!==q.correct){
+            b.classList.add("wrong");
+        }
+    });
+
+    if(i===q.correct) score++;
+
+    document.getElementById("note").innerHTML=
+        `<div class="note">💡 ${q.note}</div>`;
+
+    document.getElementById("nextBtn").style.display="block";
+}
+
+function nextQuestion(){
+    current++;
+
+    if(current<quiz.length){
+        loadQuestion();
+    } else {
+        document.getElementById("question").innerHTML="Quiz Tamat!";
+        document.getElementById("answers").innerHTML="";
+        document.getElementById("note").innerHTML="";
+        document.getElementById("nextBtn").style.display="none";
+
+        document.getElementById("score").innerHTML=
+            `Markah: ${score}/${quiz.length}`;
+
+        document.getElementById("downloadBtn").style.display="block";
+    }
+}
+
+function downloadCSV(){
+    let csv="Nama,Bahagian,Email,Markah\n";
+    csv+=`${user.name},${user.dept},${user.email},${score}/${quiz.length}`;
+
+    let link=document.createElement("a");
+    link.href="data:text/csv;charset=utf-8,"+encodeURI(csv);
+    link.download="result.csv";
+    link.click();
+}
+
+</script>
+
+</body>
+</html>
