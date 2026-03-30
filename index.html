@@ -6,7 +6,7 @@
 <title>Quiz JKKP 12</title>
 <style>
 body {
-    font-family: Arial;
+    font-family: Arial, sans-serif;
     background: linear-gradient(135deg,#1e3c72,#2a5298);
     color:#fff;
     text-align:center;
@@ -41,14 +41,15 @@ button.default { background:#fff; color:#2a5298; }
     border-radius:8px;
     font-size:0.9em;
 }
+img.logo { width:100px; margin:10px; }
 </style>
 </head>
 <body>
 
 <!-- INTRO -->
 <div id="intro">
-    <img src="logo_sarawak.png" width="100">
-    <img src="logo_jps.png" width="100">
+    <img src="logo_sarawak.png" class="logo">
+    <img src="logo_jps.png" class="logo">
     <h1>Quiz JKKP 12</h1>
 
     <input id="name" placeholder="Nama"><br>
@@ -129,6 +130,7 @@ function startQuiz(){
     loadQuestion();
 }
 
+// Load question with shuffle jawapan
 function loadQuestion(){
     answered=false;
     document.getElementById("note").innerHTML="";
@@ -137,9 +139,16 @@ function loadQuestion(){
     let q=quiz[current];
     document.getElementById("question").innerHTML=(current+1)+". "+q.q;
 
+    // Shuffle jawapan
+    let answers = q.a.map((ans,index)=>({text: ans, index: index}));
+    answers.sort(()=>Math.random()-0.5);
+
+    // Simpan index jawapan betul selepas shuffle
+    q.shuffledIndex = answers.findIndex(ans=>ans.index === q.correct);
+
     let html="";
-    q.a.forEach((ans,i)=>{
-        html+=`<button class="default" onclick="answer(${i})">${ans}</button>`;
+    answers.forEach((ans,i)=>{
+        html+=`<button class="default" onclick="answer(${i})">${ans.text}</button>`;
     });
 
     document.getElementById("answers").innerHTML=html;
@@ -153,15 +162,15 @@ function answer(i){
     let btns=document.querySelectorAll("#answers button");
 
     btns.forEach((b,index)=>{
-        if(index===q.correct){
+        if(index===q.shuffledIndex){
             b.classList.add("correct");
         }
-        if(index===i && i!==q.correct){
+        if(index===i && i!==q.shuffledIndex){
             b.classList.add("wrong");
         }
     });
 
-    if(i===q.correct) {
+    if(i===q.shuffledIndex) {
         score++;
         document.getElementById("note").innerHTML="";
     } else {
