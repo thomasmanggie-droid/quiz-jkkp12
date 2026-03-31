@@ -4,52 +4,86 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Quiz JKKP 12</title>
+
 <style>
 body {
     font-family: Arial, sans-serif;
+    margin:0;
+    padding:20px;
     background: linear-gradient(135deg,#1e3c72,#2a5298);
     color:#fff;
     text-align:center;
+}
+
+.container {
+    max-width:500px;
+    margin:auto;
+    background:rgba(0,0,0,0.3);
     padding:20px;
+    border-radius:12px;
 }
-input { 
-    padding:8px; 
-    margin:5px; 
-    border-radius:5px; 
-    border:none; 
-    width:80%; 
-    max-width:300px; 
+
+input {
+    width:90%;
+    padding:10px;
+    margin:5px;
+    border-radius:6px;
+    border:none;
 }
+
 button {
-    display:block;
-    width:80%;
-    max-width:400px;
-    margin:10px auto;
+    width:90%;
     padding:12px;
+    margin:8px;
     border:none;
     border-radius:8px;
+    font-size:16px;
     cursor:pointer;
 }
-button.correct { background:#4CAF50; color:#fff; }
-button.wrong { background:#f44336; color:#fff; }
-button.default { background:#fff; color:#2a5298; }
-#nextBtn { display:none; background:orange; color:#000; }
-.note {
-    background:rgba(0,0,0,0.4);
-    padding:10px;
-    margin-top:10px;
-    border-radius:8px;
-    font-size:0.9em;
+
+.default { background:#fff; color:#2a5298; }
+.correct { background:#4CAF50; color:#fff; }
+.wrong { background:#f44336; color:#fff; }
+
+#nextBtn {
+    display:none;
+    background:orange;
+    color:#000;
 }
-img.logo { width:100px; margin:10px; }
+
+.logo {
+    width:80px;
+    margin:5px;
+}
+
+/* Animasi BETUL */
+@keyframes flash {
+    0% { opacity:1; transform:scale(1); }
+    50% { opacity:0.3; transform:scale(1.2); }
+    100% { opacity:1; transform:scale(1); }
+}
+
+/* Mobile */
+@media(max-width:600px){
+    h1 { font-size:20px; }
+    button { font-size:14px; }
+}
 </style>
 </head>
+
 <body>
+
+<div class="container">
+
+<!-- AUDIO -->
+<audio id="correctSound" src="https://assets.mixkit.co/sfx/preview/mixkit-correct-answer-tone-2870.mp3"></audio>
+<audio id="wrongSound" src="https://assets.mixkit.co/sfx/preview/mixkit-wrong-answer-buzz-950.mp3"></audio>
 
 <!-- INTRO -->
 <div id="intro">
     <img src="logo_sarawak.png" class="logo">
     <img src="logo_jps.png" class="logo">
+
     <h1>Quiz JKKP 12</h1>
 
     <input id="name" placeholder="Nama"><br>
@@ -61,7 +95,7 @@ img.logo { width:100px; margin:10px; }
 
 <!-- QUIZ -->
 <div id="quiz" style="display:none;">
-    <h2 id="question"></h2>
+    <h3 id="question"></h3>
     <div id="answers"></div>
     <div id="note"></div>
     <button id="nextBtn" onclick="nextQuestion()">Next</button>
@@ -69,91 +103,88 @@ img.logo { width:100px; margin:10px; }
     <button id="downloadBtn" style="display:none;" onclick="downloadCSV()">Download CSV</button>
 </div>
 
+</div>
+
 <script>
+
+// ===== SOALAN =====
 const quiz = [
-  // 1-5: Pengenalan JKKP
-  {q:"Apakah fungsi utama JKKP?", a:["Menjaga keselamatan awam","Memastikan keselamatan dan kesihatan pekerja","Mengawal kesihatan pekerja sahaja","Mengenakan tindakan undang-undang"], correct:1, note:"JKKP fokus keselamatan & kesihatan pekerja, bukan keselamatan awam."},
-  {q:"JKKP berada di bawah kementerian mana?", a:["Kementerian Kerja Raya","Kementerian Sumber Manusia","Kementerian Perumahan","Kementerian Usahawan"], correct:1, note:"JKKP berada di bawah Kementerian Sumber Manusia."},
-  {q:"Apakah peranan utama JKKP dalam penguatkuasaan?", a:["Mengurus projek","Memastikan pematuhan keselamatan","Mengurus gaji pekerja","Mengawal harga bahan"], correct:1, note:"JKKP memastikan pematuhan undang-undang keselamatan."},
-  {q:"Skop tanggungjawab JKKP termasuk?", a:["Mengurus semua operasi projek","Memastikan pematuhan keselamatan & kesihatan","Mengawal aktiviti ekonomi pekerja","Mengurus kebajikan pekerja sahaja"], correct:1, note:"Fokus JKKP adalah keselamatan & kesihatan di tempat kerja."},
-  {q:"Perbezaan JKKP dan pengurusan projek pembinaan?", a:["Tiada perbezaan","JKKP fokus keselamatan, projek fokus pelaksanaan","JKKP urus pekerja, projek urus undang-undang","JKKP terlibat selepas projek selesai"], correct:1, note:"JKKP fokus keselamatan & kesihatan, projek fokus pelaksanaan kerja."},
+{q:"Apakah fungsi utama JKKP?", a:["Menjaga keselamatan awam","Memastikan keselamatan dan kesihatan pekerja","Mengawal kesihatan pekerja sahaja","Mengenakan tindakan undang-undang"], correct:1},
+{q:"JKKP berada di bawah kementerian mana?", a:["Kementerian Kerja Raya","Kementerian Sumber Manusia","Kementerian Perumahan","Kementerian Usahawan"], correct:1},
+{q:"Apakah peranan utama JKKP dalam penguatkuasaan?", a:["Mengurus projek","Memastikan pematuhan keselamatan","Mengurus gaji pekerja","Mengawal harga bahan"], correct:1},
+{q:"Skop tanggungjawab JKKP termasuk?", a:["Mengurus semua operasi projek","Memastikan pematuhan keselamatan & kesihatan","Mengawal aktiviti ekonomi pekerja","Mengurus kebajikan pekerja sahaja"], correct:1},
+{q:"Perbezaan JKKP dan pengurusan projek?", a:["Tiada perbezaan","JKKP fokus keselamatan, projek pelaksanaan","JKKP urus pekerja","JKKP selepas projek siap"], correct:1},
 
-  // 6-10: PATK1 / MyKKP
-  {q:"Siapakah PATK1 dalam MyKKP?", a:["Penyelia tapak","Wakil klien / pemilik projek","Pegawai keselamatan","Subkontraktor"], correct:1, note:"PATK1 ialah wakil klien yang mendaftarkan projek."},
-  {q:"Peranan utama PATK1?", a:["Menyelia kerja harian","Mendaftarkan projek sebelum kerja dimulakan","Menguatkuasakan keselamatan","Mengurus peralatan tapak"], correct:1, note:"PATK1 mendaftarkan projek dalam MyKKP."},
-  {q:"Siapa bertanggungjawab betulkan maklumat projek?", a:["Pegawai JKKP","PATK1","Kontraktor utama","Mana-mana pihak"], correct:1, note:"PATK1 bertanggungjawab update maklumat yang didaftarkan."},
-  {q:"Jika pematuhan keselamatan gagal, siapa dipertanggungjawabkan?", a:["PATK1 sahaja","Kontraktor sahaja","Kedua-dua pihak ikut skop","JKKP"], correct:2, note:"Tanggungjawab bergantung kepada skop kerja masing-masing."},
-  {q:"Peranan PATK1 lebih tertumpu kepada?", a:["Pelaksanaan fizikal","Pendaftaran & pengisytiharan projek","Pengurusan keselamatan harian","Penyeliaan operasi"], correct:1, note:"PATK1 fokus pada pendaftaran dan pengisytiharan projek."},
+{q:"Siapakah PATK1?", a:["Penyelia","Wakil klien","Pegawai keselamatan","Subkontraktor"], correct:1},
+{q:"Peranan PATK1?", a:["Menyelia kerja","Mendaftarkan projek","Menguatkuasa","Urus peralatan"], correct:1},
+{q:"Siapa betulkan maklumat?", a:["JKKP","PATK1","Kontraktor","Semua"], correct:1},
+{q:"Kegagalan pematuhan?", a:["PATK1","Kontraktor","Kedua-dua","JKKP"], correct:2},
+{q:"Peranan PATK1 fokus?", a:["Kerja fizikal","Pendaftaran projek","Keselamatan harian","Operasi"], correct:1},
 
-  // 11-20: Akta & Keperluan JKKP12
-  {q:"Apakah maksud JKKP12?", a:["Dokumen kawalan keselamatan","Borang pendaftaran tapak bina","Laporan audit keselamatan","Permit kerja harian"], correct:1, note:"JKKP12 ialah borang pendaftaran tapak bina."},
-  {q:"Bilakah borang JKKP12 perlu dikemukakan?", a:["Selepas kerja selesai","Sebelum kerja dimulakan","Semasa audit","Selepas kemalangan"], correct:1, note:"Borang perlu dikemukakan sebelum kerja bermula."},
-  {q:"Implikasi kerja tanpa JKKP12?", a:["Tidak kesalahan kecil","Pelanggaran peraturan boleh dikenakan tindakan","Bergantung jenis kerja","Hanya amaran"], correct:1, note:"Kerja tanpa pendaftaran JKKP12 boleh dikenakan tindakan."},
-  {q:"Siapa bertanggungjawab keselamatan tapak?", a:["Klien","Kontraktor utama","Penyelia tapak","Semua pekerja"], correct:3, note:"Keselamatan tapak tanggungjawab semua pihak tetapi major: kontraktor & PATK1."},
-  {q:"Tempoh projek dilanjutkan, tindakan JKKP12?", a:["Tiada tindakan","Maklumat perlu dikemas kini","Hanya maklum dalaman","Tunggu arahan JKKP"], correct:1, note:"Maklumat pendaftaran perlu dikemaskini."},
-  {q:"Tujuan utama pendaftaran JKKP12?", a:["Rekod maklumat","Pemantauan keselamatan pekerja","Audit kewangan","Kawalan bahan binaan"], correct:1, note:"Tujuan JKKP12 ialah pemantauan keselamatan & kesihatan pekerja."},
-  {q:"Lokasi projek berubah, apa perlu dibuat?", a:["Tiada tindakan","Kemas kini lokasi dalam JKKP12","Tunggu pemeriksaan","Maklum pekerja"], correct:1, note:"Lokasi baru perlu dikemaskini dalam sistem."},
-  {q:"Subkontraktor langgar peraturan, siapa dikenakan tindakan?", a:["Subkontraktor sahaja","Kontraktor sahaja","Kedua-dua pihak","Tiada tindakan"], correct:2, note:"Tindakan boleh dikenakan kepada kedua-dua pihak ikut skop."},
-  {q:"PTW gantikan keperluan JKKP12?", a:["Ya","Tidak, fungsi berbeza","Bergantung projek","Hanya kerja berisiko tinggi"], correct:1, note:"PTW dan JKKP12 berbeza fungsi."},
-  {q:"Projek kecil dikecualikan JKKP12?", a:["Ya","Tidak, semua perlu daftar","Bergantung pekerja","Bergantung tempoh"], correct:1, note:"Semua projek pembinaan wajib didaftarkan."},
+{q:"Apa itu JKKP12?", a:["Dokumen keselamatan","Borang tapak bina","Audit","Permit"], correct:1},
+{q:"Bila hantar?", a:["Selepas siap","Sebelum mula","Semasa audit","Selepas kemalangan"], correct:1},
+{q:"Implikasi tak daftar?", a:["Tiada","Salah boleh tindakan","Bergantung","Amaran"], correct:1},
+{q:"Siapa tanggungjawab keselamatan?", a:["Klien","Kontraktor","Penyelia","Semua"], correct:3},
+{q:"Projek lanjut?", a:["Tiada","Update maklumat","Maklum sahaja","Tunggu"], correct:1},
+{q:"Tujuan JKKP12?", a:["Rekod","Pemantauan","Audit","Bahan"], correct:1},
+{q:"Lokasi berubah?", a:["Tiada","Update","Tunggu","Maklum"], correct:1},
+{q:"Subkontraktor langgar?", a:["Subkontraktor","Kontraktor","Kedua","Tiada"], correct:2},
+{q:"PTW ganti JKKP12?", a:["Ya","Tidak","Bergantung","Risiko tinggi"], correct:1},
+{q:"Projek kecil?", a:["Ya","Tidak","Bergantung","Tempoh"], correct:1},
 
-  // 21-30: Cepu Emas / tricky
-  {q:"Jika pekerja tiada PPE, siapa bertanggungjawab?", a:["Pekerja sahaja","Kontraktor sahaja","PATK1 & kontraktor","JKKP"], correct:2, note:"Kontraktor dan PATK1 bertanggungjawab memastikan pekerja pakai PPE."},
-  {q:"Apakah tujuan audit tapak bina?", a:["Pastikan gaji dibayar","Pastikan keselamatan & kesihatan pekerja","Urus bahan binaan","Semua di atas"], correct:1, note:"Audit tapak untuk keselamatan & kesihatan pekerja."},
-  {q:"Dokumen mana perlu disimpan di tapak?", a:["JKKP12","PTW","Laporan audit","Semua di atas"], correct:3, note:"Semua dokumen keselamatan & pendaftaran wajib disimpan di tapak."},
-  {q:"Jika PATK1 gagal daftar, apa tindakan JKKP?", a:["Tiada tindakan","Amaran sahaja","Tindakan undang-undang boleh dikenakan","Tunggu projek selesai"], correct:2, note:"PATK1 boleh dikenakan tindakan jika gagal daftar."},
-  {q:"Borang JKKP12 mengandungi?", a:["Maklumat projek & kontraktor","Senarai pekerja sahaja","Hanya lokasi tapak","Hanya peralatan"], correct:0, note:"Borang mengandungi info projek & kontraktor."},
-  {q:"Bila pendaftaran JKKP12 tamat tempoh?", a:["Tiada tempoh","Sampai projek selesai","Setiap 6 bulan","Setiap tahun"], correct:1, note:"Pendaftaran sah sehingga projek selesai."},
-  {q:"Siapa boleh semak JKKP12?", a:["Pekerja tapak","JKKP sahaja","PATK1 & JKKP","Orang awam"], correct:2, note:"PATK1 & pegawai JKKP boleh semak."},
-  {q:"Jika berlaku kemalangan, apa perlu dilakukan?", a:["Tidak buat apa-apa","Laporkan kepada JKKP","Tunggu laporan akhir","Hanya maklum kontraktor"], correct:1, note:"Kemalangan mesti dilaporkan kepada JKKP."},
-  {q:"Apakah penalti gagal daftar JKKP12?", a:["Tiada penalti","Denda & tindakan undang-undang","Amaran lisan","Hanya penalti kontraktor"], correct:1, note:"Gagal daftar boleh dikenakan denda & tindakan undang-undang."},
-  {q:"Siapa wajib daftar projek di MyKKP?", a:["Klien / pemilik projek","Pekerja","Subkontraktor","JKKP"], correct:0, note:"Klien / pemilik projek wajib mendaftar projek."}
+{q:"Tiada PPE?", a:["Pekerja","Kontraktor","Kedua","JKKP"], correct:2},
+{q:"Audit tapak?", a:["Gaji","Keselamatan","Bahan","Semua"], correct:1},
+{q:"Dokumen di tapak?", a:["JKKP12","PTW","Audit","Semua"], correct:3},
+{q:"PATK1 gagal daftar?", a:["Tiada","Amaran","Tindakan","Tunggu"], correct:2},
+{q:"Isi JKKP12?", a:["Maklumat projek","Pekerja","Lokasi","Peralatan"], correct:0},
+{q:"Tamat tempoh?", a:["Tiada","Projek siap","6 bulan","Setahun"], correct:1},
+{q:"Siapa semak?", a:["Pekerja","JKKP","PATK1 & JKKP","Awam"], correct:2},
+{q:"Kemalangan?", a:["Biarkan","Lapor","Tunggu","Maklum"], correct:1},
+{q:"Penalti?", a:["Tiada","Denda","Amaran","Kontraktor"], correct:1},
+{q:"Siapa daftar?", a:["Klien","Pekerja","Sub","JKKP"], correct:0}
 ];
 
-let current=0;
-let score=0;
-let user={};
-let answered=false;
+let current=0, score=0, answered=false, user={};
 
+// ===== START =====
 function startQuiz(){
-    user.name=document.getElementById("name").value;
-    user.dept=document.getElementById("dept").value;
-    user.email=document.getElementById("email").value;
+    user.name=name.value;
+    user.dept=dept.value;
+    user.email=email.value;
 
     if(!user.name || !user.dept || !user.email){
-        alert("Sila isi semua maklumat");
+        alert("Isi semua maklumat");
         return;
     }
 
-    document.getElementById("intro").style.display="none";
-    document.getElementById("quiz").style.display="block";
+    intro.style.display="none";
+    quizDiv.style.display="block";
     loadQuestion();
 }
 
-// Load question with shuffle jawapan
+const quizDiv=document.getElementById("quiz");
+
+// ===== LOAD =====
 function loadQuestion(){
     answered=false;
-    document.getElementById("note").innerHTML="";
-    document.getElementById("nextBtn").style.display="none";
+    note.innerHTML="";
+    nextBtn.style.display="none";
 
     let q=quiz[current];
-    document.getElementById("question").innerHTML=(current+1)+". "+q.q;
+    question.innerHTML=(current+1)+". "+q.q;
 
-    // Shuffle jawapan
-    let answers = q.a.map((ans,index)=>({text: ans, index: index}));
-    answers.sort(()=>Math.random()-0.5);
+    let arr=q.a.map((a,i)=>({text:a,i}));
+    arr.sort(()=>Math.random()-0.5);
 
-    // Simpan index jawapan betul selepas shuffle
-    q.shuffledIndex = answers.findIndex(ans=>ans.index === q.correct);
+    q.shuffledIndex=arr.findIndex(x=>x.i===q.correct);
 
-    let html="";
-    answers.forEach((ans,i)=>{
-        html+=`<button class="default" onclick="answer(${i})">${ans.text}</button>`;
+    answers.innerHTML="";
+    arr.forEach((x,i)=>{
+        answers.innerHTML+=`<button class="default" onclick="answer(${i})">${x.text}</button>`;
     });
-
-    document.getElementById("answers").innerHTML=html;
 }
 
+// ===== ANSWER =====
 function answer(i){
     if(answered) return;
     answered=true;
@@ -162,51 +193,78 @@ function answer(i){
     let btns=document.querySelectorAll("#answers button");
 
     btns.forEach((b,index)=>{
-        if(index===q.shuffledIndex){
-            b.classList.add("correct");
-        }
-        if(index===i && i!==q.shuffledIndex){
-            b.classList.add("wrong");
-        }
+        if(index===q.shuffledIndex) b.classList.add("correct");
+        if(index===i && i!==q.shuffledIndex) b.classList.add("wrong");
     });
 
-    if(i===q.shuffledIndex) {
+    if(i===q.shuffledIndex){
         score++;
-        document.getElementById("note").innerHTML="";
+        correctSound.play();
+
+        note.innerHTML="<div style='font-size:24px;color:#00ff00;animation:flash 0.6s 3;'>🎉 BETUL!!!</div>";
     } else {
-        document.getElementById("note").innerHTML=
-            `<div class="note">💡 ${q.note}</div>`;
+        wrongSound.play();
     }
 
-    document.getElementById("nextBtn").style.display="block";
+    nextBtn.style.display="block";
 }
 
+// ===== NEXT =====
 function nextQuestion(){
     current++;
-
     if(current<quiz.length){
         loadQuestion();
     } else {
-        document.getElementById("question").innerHTML="Quiz Tamat!";
-        document.getElementById("answers").innerHTML="";
-        document.getElementById("note").innerHTML="";
-        document.getElementById("nextBtn").style.display="none";
-
-        document.getElementById("score").innerHTML=
-            `Markah: ${score}/${quiz.length}`;
-
-        document.getElementById("downloadBtn").style.display="block";
+        showResult();
     }
 }
 
+// ===== RESULT =====
+function showResult(){
+    question.innerHTML="🎯 Quiz Tamat!";
+    answers.innerHTML="";
+    nextBtn.style.display="none";
+
+    let percent=(score/quiz.length)*100;
+    let msg="";
+
+    if(percent>=80){ msg="🏆 TAHNIAH!"; confetti(); }
+    else if(percent>=50){ msg="👍 Baik!"; }
+    else{ msg="💡 Cuba Lagi!"; }
+
+    scoreEl.innerHTML=`${msg}<br>${score}/${quiz.length}`;
+    downloadBtn.style.display="block";
+}
+
+// ===== CONFETTI =====
+function confetti(){
+    for(let i=0;i<80;i++){
+        let d=document.createElement("div");
+        d.style.position="fixed";
+        d.style.width="8px";
+        d.style.height="8px";
+        d.style.background=`hsl(${Math.random()*360},100%,50%)`;
+        d.style.left=Math.random()*100+"vw";
+        d.style.top="0";
+        document.body.appendChild(d);
+
+        d.animate([
+            {transform:"translateY(0)"},
+            {transform:`translateY(${window.innerHeight}px)`}
+        ],{duration:2000+Math.random()*2000});
+
+        setTimeout(()=>d.remove(),3000);
+    }
+}
+
+// ===== CSV =====
 function downloadCSV(){
     let csv="Nama,Bahagian,Email,Markah\n";
     csv+=`${user.name},${user.dept},${user.email},${score}/${quiz.length}`;
-
-    let link=document.createElement("a");
-    link.href="data:text/csv;charset=utf-8,"+encodeURI(csv);
-    link.download="result.csv";
-    link.click();
+    let a=document.createElement("a");
+    a.href="data:text/csv;charset=utf-8,"+encodeURI(csv);
+    a.download="result.csv";
+    a.click();
 }
 </script>
 
