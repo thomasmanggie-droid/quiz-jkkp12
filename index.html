@@ -3,62 +3,78 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Latihan JKKP 12 - Mini E-Learning</title>
+<title>Latihan JKKP 12 - Jabatan Pengairan & Saliran Sarawak</title>
 <style>
-/* ===== Reset & Base ===== */
-*{box-sizing:border-box;margin:0;padding:0;}
-body{font-family: 'Arial', sans-serif; background: #f0f4f8; color:#333;}
-.container{max-width:900px;margin:20px auto;background:white;padding:25px;border-radius:12px;box-shadow:0 0 15px rgba(0,0,0,0.1);}
-
-/* ===== Header ===== */
-header{text-align:center;background:#004d40;color:white;padding:20px;border-radius:12px 12px 0 0;position:relative;}
-header img{height:50px;margin:0 10px;vertical-align:middle;}
-header h1{margin:10px 0;font-size:24px;}
-header p{opacity:0.85;font-size:14px;}
-.icon-header{position:absolute;top:15px;right:15px;display:flex;gap:10px;}
-.icon-header img{height:35px;}
-
-/* ===== Intro / Registration ===== */
-#intro{padding:20px;}
-#intro p{margin-bottom:15px;font-size:14px;}
-#intro input{width:100%;padding:10px;margin:5px 0 15px 0;border-radius:6px;border:1px solid #ccc;}
-#intro button{padding:12px 25px;border:none;border-radius:8px;background:#00796b;color:white;cursor:pointer;font-size:16px;transition:0.3s;}
-#intro button:hover{background:#004d40;}
-
-/* ===== Quiz ===== */
-.quiz-section{display:none;padding:10px;}
-.question{background:#e8f5e9;border-left:6px solid #00796b;padding:15px;margin-bottom:15px;border-radius:8px;box-shadow:0 0 5px rgba(0,0,0,0.05);}
+body{
+    font-family: Arial, sans-serif;
+    background-color:#f5f5f5;
+    margin:0;
+    padding:0;
+}
+header{
+    text-align:center;
+    background-color:#004d40;
+    color:white;
+    padding:15px 0;
+}
+header img{
+    height:60px;
+    margin:0 10px;
+}
+.container{
+    max-width:800px;
+    margin:20px auto;
+    background:white;
+    padding:20px;
+    border-radius:10px;
+    box-shadow:0 0 10px rgba(0,0,0,0.1);
+}
+h1,h2,h3{margin:10px 0;}
+.quiz-section{display:none;}
+.question{margin:20px 0;}
 .options button{
-    display:block;width:100%;padding:12px;margin:8px 0;border:none;border-radius:8px;background:#cfd8dc;color:#333;font-size:14px;cursor:pointer;transition:0.3s;
+    display:block;
+    width:100%;
+    margin:5px 0;
+    padding:10px;
+    border:none;
+    border-radius:5px;
+    background-color:#e0e0e0;
+    cursor:pointer;
+    transition:0.3s;
 }
-.options button:hover{background:#b0bec5;}
-.options button.correct{background:#4caf50;color:white;animation:flash 0.5s;}
-.options button.wrong{background:#f44336;color:white;}
-@keyframes flash{0%{transform:scale(1);}50%{transform:scale(1.2);}100%{transform:scale(1);}}
-
-/* Next button */
-.next-btn{margin-top:15px;padding:12px 25px;background:#00796b;color:white;border:none;border-radius:8px;cursor:pointer;transition:0.3s;font-size:16px;}
-.next-btn:hover{background:#004d40;}
-
-/* ===== Result ===== */
-#result{text-align:center;display:none;}
-#score{font-size:18px;margin-bottom:15px;}
-
-/* ===== Confetti ===== */
+.options button:hover{
+    background-color:#b2dfdb;
+}
+.options button.correct{background-color:#4caf50;color:white;animation:flash 0.5s;}
+.options button.wrong{background-color:#f44336;color:white;}
+@keyframes flash{
+    0%{transform:scale(1);}
+    50%{transform:scale(1.2);}
+    100%{transform:scale(1);}
+}
+.next-btn{
+    margin-top:15px;
+    padding:10px 20px;
+    background:#004d40;
+    color:white;
+    border:none;
+    border-radius:5px;
+    cursor:pointer;
+    transition:0.3s;
+}
+.next-btn:hover{
+    background:#00796b;
+}
+footer{text-align:center;font-size:12px;color:#777;margin-top:20px;}
 .confetti{position:fixed;width:100%;height:100%;top:0;left:0;pointer-events:none;z-index:999;}
-
-/* ===== Responsive ===== */
-@media(max-width:600px){
-    header h1{font-size:20px;}
-    #intro input,#intro button,.options button,.next-btn{font-size:14px;}
-}
 </style>
 </head>
 <body>
 
 <header>
     <img src="logo_sarawak.png" alt="Logo Sarawak">
-    <img src="logo_jps.png" alt="Logo JPS">
+    <img src="logo_jps.png" alt="Logo Jabatan Pengairan & Saliran">
     <h1>Latihan JKKP 12 - Pendaftaran Tapak Bina</h1>
     <p>Jabatan Pengairan & Saliran Sarawak</p>
 </header>
@@ -67,13 +83,11 @@ header p{opacity:0.85;font-size:14px;}
     <div id="intro">
         <h2>Selamat Datang</h2>
         <p>Latihan ini bertujuan meningkatkan kefahaman pegawai berkaitan pendaftaran tapak bina (JKKP 12), peranan PATK1 serta pematuhan keselamatan dan kesihatan pekerjaan.</p>
+        <p><strong>Kita boleh upgrade terus ke versi “mini e-learning rasmi”</strong></p>
         <form id="regForm">
-            <label>Nama:</label>
-            <input type="text" id="name" required>
-            <label>Bahagian:</label>
-            <input type="text" id="department" required>
-            <label>Email:</label>
-            <input type="email" id="email" required>
+            <label>Nama:</label><input type="text" id="name" required><br><br>
+            <label>Bahagian:</label><input type="text" id="department" required><br><br>
+            <label>Email:</label><input type="email" id="email" required><br><br>
             <button type="button" onclick="startQuiz()">Mula Latihan</button>
         </form>
     </div>
@@ -95,8 +109,8 @@ header p{opacity:0.85;font-size:14px;}
 <div class="confetti" id="confetti"></div>
 
 <script>
-// ===== Data Soalan 30 =====
 const quiz=[
+    // 30 soalan lengkap
     {q:"Apakah tujuan utama JKKP 12 dalam projek pembinaan?", a:["Memastikan pematuhan keselamatan & kesihatan pekerja","Merekod kewangan projek","Memantau jadual kerja","Menilai prestasi kontraktor"], correct:0},
     {q:"Siapakah yang bertanggungjawab mendaftar tapak bina dalam MyKKP?", a:["Klien / pemilik projek","Subkontraktor","JKKP","Penyelia tapak"], correct:0},
     {q:"Apakah peranan PATK1 dalam MyKKP?", a:["Mendaftar projek dan kemas kini maklumat","Memantau kerja harian sahaja","Menguatkuasa undang-undang","Menyelia keselamatan pekerja secara fizikal"], correct:0},
@@ -126,7 +140,8 @@ const quiz=[
     {q:"Situasi: Kerja malam tanpa lampu, siapa patuhi SOP?", a:["Kontraktor & PATK1","Tiada tindakan","Hanya JKKP","Pekerja"], correct:0}
 ];
 
-let current=0, score=0;
+let current=0;
+let score=0;
 
 function shuffleArray(arr){
     for(let i=arr.length-1;i>0;i--){
@@ -140,7 +155,10 @@ function startQuiz(){
     let n=document.getElementById("name").value.trim();
     let d=document.getElementById("department").value.trim();
     let e=document.getElementById("email").value.trim();
-    if(!n||!d||!e){alert("Sila isi semua maklumat"); return;}
+    if(!n||!d||!e){
+        alert("Sila isi semua maklumat");
+        return;
+    }
     document.getElementById("intro").style.display="none";
     document.getElementById("quiz").style.display="block";
     shuffleArray(quiz);
@@ -169,39 +187,60 @@ function checkAnswer(idx,btn){
     buttons.forEach(b=>b.disabled=true);
     if(idx==q.correct){
         btn.classList.add("correct");
+        btn.innerText += " ✅ BETUL!!!";
         score++;
     }else{
         btn.classList.add("wrong");
         buttons[q.correct].classList.add("correct");
+        buttons[q.correct].innerText += " ✅ Betul";
     }
     document.getElementById("nextBtn").style.display="block";
 }
 
 function nextQuestion(){
     current++;
-    if(current<quiz.length) showQuestion();
-    else showResult();
+    if(current<quiz.length){
+        showQuestion();
+    }else{
+        showResult();
+    }
 }
 
 function showResult(){
     document.getElementById("quiz").style.display="none";
     document.getElementById("result").style.display="block";
     let percent=Math.round(score/quiz.length*100);
-    let msg="", remark="";
-    if(percent>=80){msg="🏆 TAHNIAH!"; remark="Tahap kefahaman sangat baik."; confettiEffect();}
-    else if(percent>=50){msg="👍 MEMUASKAN"; remark="Tahap kefahaman sederhana.";}
-    else{msg="⚠️ PERLU PENAMBAHBAIKAN"; remark="Tahap kefahaman rendah.";}
+    let msg="";
+    let remark="";
+    if(percent>=80){
+        msg="🏆 TAHNIAH!";
+        remark="Tahap kefahaman sangat baik. Anda menunjukkan penguasaan yang kukuh terhadap keperluan JKKP 12 dan pematuhan keselamatan.";
+        confettiEffect();
+    } else if(percent>=50){
+        msg="👍 MEMUASKAN";
+        remark="Tahap kefahaman sederhana. Disarankan untuk meneliti semula keperluan pendaftaran dan tanggungjawab pihak terlibat.";
+    }else{
+        msg="⚠️ PERLU PENAMBAHBAIKAN";
+        remark="Tahap kefahaman masih rendah. Disarankan mengikuti semula latihan dan memahami keperluan asas JKKP 12.";
+    }
     document.getElementById("score").innerHTML=`${msg}<br>Markah: ${score}/${quiz.length} (${percent}%)<br><br>${remark}`;
 }
 
-function restartQuiz(){current=0; score=0; document.getElementById("result").style.display="none"; document.getElementById("intro").style.display="block";}
+function restartQuiz(){
+    current=0;
+    score=0;
+    document.getElementById("result").style.display="none";
+    document.getElementById("intro").style.display="block";
+}
 
 function confettiEffect(){
-    let conf=document.getElementById("confetti"); conf.innerHTML="";
+    let conf=document.getElementById("confetti");
+    conf.innerHTML="";
     for(let i=0;i<100;i++){
         let span=document.createElement("span");
         span.style.position="absolute";
-        span.style.width="10px"; span.style.height="10px";
+        span.style.width="10px";
+        span.style.height="10px";
         span.style.backgroundColor=['#ff0','#f00','#0f0','#0ff','#f0f'][Math.floor(Math.random()*5)];
         span.style.top=Math.random()*window.innerHeight+'px';
         span.style.left=Math.random()*window.innerWidth+'px';
