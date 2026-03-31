@@ -204,6 +204,8 @@ function showQuestion(){
     optArray.forEach(o=>{
         let btn=document.createElement("button");
         btn.innerText=o.text;
+        btn.className=""; // pastikan tiada class correct/wrong awal
+        btn.disabled=false; // pastikan aktif
         btn.onclick=()=>checkAnswer(o.index,btn);
         optionsDiv.appendChild(btn);
     });
@@ -212,13 +214,13 @@ function showQuestion(){
 function checkAnswer(idx,btn){
     let q=quiz[current];
     let buttons=document.querySelectorAll(".options button");
-    buttons.forEach(b=>b.disabled=true);
+    buttons.forEach(b=>b.disabled=true); // lock semua jawapan selepas klik
     if(idx==q.correct){
-        btn.classList.add("correct");
+        btn.classList.add("correct"); // hijau + animasi
         score++;
     }else{
-        btn.classList.add("wrong");
-        buttons[q.correct].classList.add("correct");
+        btn.classList.add("wrong"); // merah untuk jawapan salah
+        buttons[q.correct].classList.add("correct"); // tunjuk jawapan betul
     }
     document.getElementById("nextBtn").style.display="block";
 }
