@@ -8,7 +8,8 @@
 body{
     font-family: Arial, sans-serif;
     background-color:#f5f5f5;
-    margin:0; padding:0;
+    margin:0;
+    padding:0;
 }
 header{
     text-align:center;
@@ -42,6 +43,9 @@ h1,h2,h3{margin:10px 0;}
     cursor:pointer;
     transition:0.3s;
 }
+.options button:hover{
+    background-color:#b2dfdb;
+}
 .options button.correct{background-color:#4caf50;color:white;animation:flash 0.5s;}
 .options button.wrong{background-color:#f44336;color:white;}
 @keyframes flash{
@@ -57,6 +61,10 @@ h1,h2,h3{margin:10px 0;}
     border:none;
     border-radius:5px;
     cursor:pointer;
+    transition:0.3s;
+}
+.next-btn:hover{
+    background:#00796b;
 }
 footer{text-align:center;font-size:12px;color:#777;margin-top:20px;}
 .confetti{position:fixed;width:100%;height:100%;top:0;left:0;pointer-events:none;z-index:999;}
@@ -75,6 +83,7 @@ footer{text-align:center;font-size:12px;color:#777;margin-top:20px;}
     <div id="intro">
         <h2>Selamat Datang</h2>
         <p>Latihan ini bertujuan meningkatkan kefahaman pegawai berkaitan pendaftaran tapak bina (JKKP 12), peranan PATK1 serta pematuhan keselamatan dan kesihatan pekerjaan.</p>
+        <p><strong>Kita boleh upgrade terus ke versi “mini e-learning rasmi”</strong></p>
         <form id="regForm">
             <label>Nama:</label><input type="text" id="name" required><br><br>
             <label>Bahagian:</label><input type="text" id="department" required><br><br>
@@ -101,46 +110,316 @@ footer{text-align:center;font-size:12px;color:#777;margin-top:20px;}
 
 <script>
 // 30 soalan, jawapan logik & tricky, scatter nanti
-const quiz=[
-    // 1-5 Pengenalan JKKP
-    {q:"Apakah tujuan utama JKKP 12 dalam projek pembinaan?", a:["Memastikan pematuhan keselamatan & kesihatan pekerja","Merekod kewangan projek","Memantau jadual kerja","Menilai prestasi kontraktor"], correct:0},
-    {q:"Siapakah yang bertanggungjawab mendaftar tapak bina dalam MyKKP?", a:["Klien / pemilik projek","Subkontraktor","JKKP","Penyelia tapak"], correct:0},
-    {q:"Apakah makna JKKP?", a:["Jabatan Keselamatan & Kesihatan Pekerjaan","Jawatankuasa Keselamatan Projek","Jadual Kerja Kontraktor","Jabatan Kontraktor Pusat"], correct:0},
-    {q:"Apakah objektif pendaftaran JKKP 12?", a:["Memastikan projek mematuhi SOP keselamatan","Menilai prestasi pekerja","Memantau belanjawan projek","Hanya untuk audit"], correct:0},
-    {q:"Bilakah pendaftaran JKKP 12 perlu dibuat?", a:["Sebelum kerja pembinaan bermula","Selepas projek siap","Hanya bila JKKP datang audit","Bila pekerja minta"], correct:0},
-    
-    // 6-10 Peranan PATK1
-    {q:"Apakah peranan PATK1 dalam MyKKP?", a:["Mendaftar projek & kemas kini maklumat","Hanya memantau kerja harian","Menguatkuasa undang-undang","Menjadi kontraktor tapak"], correct:0},
-    {q:"Jika projek pindah lokasi, apa tindakan PATK1?", a:["Kemas kini MyKKP & maklumkan JKKP","Tiada tindakan","Hanya amaran kepada pekerja","Menunggu kelulusan kontraktor"], correct:0},
-    {q:"Siapakah yang memantau pematuhan keselamatan di tapak bina?", a:["Kontraktor utama & PATK1","Hanya JKKP","Hanya pekerja","Tiada siapa"], correct:0},
-    {q:"PATK1 perlu kemas kini JKKP 12 bila?", a:["Apabila info projek berubah","Setiap minggu","Setiap bulan","Hanya semasa audit"], correct:0},
-    {q:"Apakah tindakan PATK1 jika subkontraktor langgar SOP?", a:["Ambil tindakan & rekod dalam MyKKP","Tiada tindakan","Hanya amaran","Laporkan bulan depan"], correct:0},
+const quiz = [
+  // 1-5: Pengenalan JKKP
+  {
+    q: "Apakah tujuan utama JKKP dalam sektor pembinaan?",
+    a: [
+      "Memastikan pematuhan keselamatan & kesihatan pekerja ✅",
+      "Merekod kewangan projek",
+      "Memantau jadual kerja",
+      "Menilai prestasi kontraktor"
+    ],
+    correct: 0
+  },
+  {
+    q: "Siapakah yang bertanggungjawab memastikan keselamatan pekerja di tapak bina?",
+    a: [
+      "Klien / pemilik projek ✅",
+      "Subkontraktor sahaja",
+      "Pekerja sendiri",
+      "JKKP sahaja"
+    ],
+    correct: 0
+  },
+  {
+    q: "Apakah kepentingan mendaftar tapak bina melalui JKKP 12?",
+    a: [
+      "Memastikan semua risiko dikawal & patuh SOP ✅",
+      "Hanya untuk tujuan audit",
+      "Mencatat nama pekerja",
+      "Menentukan jadual kerja harian"
+    ],
+    correct: 0
+  },
+  {
+    q: "Jika berlaku pelanggaran keselamatan di tapak bina, siapakah boleh dikenakan tindakan?",
+    a: [
+      "Kontraktor & subkontraktor ✅",
+      "Hanya PATK1",
+      "Hanya pekerja",
+      "Tiada siapa"
+    ],
+    correct: 0
+  },
+  {
+    q: "Apakah tindakan jika lokasi projek berubah daripada asal JKKP 12?",
+    a: [
+      "Kemas kini maklumat projek & daftar semula jika perlu ✅",
+      "Tiada tindakan diperlukan",
+      "Hanya maklumkan pekerja",
+      "Tunggu arahan JKKP"
+    ],
+    correct: 0
+  },
 
-    // 11-20 Akta & keperluan JKKP12
-    {q:"Apakah risiko memulakan kerja tanpa pendaftaran JKKP12?", a:["Tindakan undang-undang & denda","Tiada risiko","Amaran sahaja","Pembetulan dalaman sahaja"], correct:0},
-    {q:"Apakah tujuan Permit to Work (PTW)?", a:["Memastikan kerja berisiko tinggi dipantau","Gantikan JKKP12","Memantau kewangan projek","Hanya untuk audit"], correct:0},
-    {q:"Siapakah bertanggungjawab keselamatan pekerja harian?", a:["Kontraktor & PATK1","Hanya JKKP","Hanya klien","Tiada siapa"], correct:0},
-    {q:"Apa risiko jika JKKP12 tidak dikemas kini?", a:["Tindakan undang-undang & audit","Tiada risiko","Amaran sahaja","Hanya laporan dalaman"], correct:0},
-    {q:"Apakah tindakan bila pekerja cedera di tapak bina?", a:["Lapor & rekod dalam MyKKP","Tiada tindakan","Hanya simpan rekod dalaman","Amaran kepada kontraktor sahaja"], correct:0},
-    {q:"Jika projek guna bahan berbahaya, siapa patuh SOP?", a:["Semua pihak di tapak","Hanya kontraktor","Hanya PATK1","Tiada siapa"], correct:0},
-    {q:"Apakah maksud PATK1?", a:["Wakil pendaftaran projek di MyKKP","Pegawai JKKP","Subkontraktor","Kontraktor"], correct:0},
-    {q:"Jika projek lewat daftar JKKP, akibat?", a:["Tindakan undang-undang & amaran","Tiada risiko","Hanya laporan dalaman","Tunggu kelulusan JKKP"], correct:0},
-    {q:"Situasi: Projek tamat sebelum semak JKKP, tindakan?", a:["Laporkan & lengkapkan rekod","Tiada tindakan","Hanya simpan dokumen","Amaran sahaja"], correct:0},
-    {q:"Situasi: Subkontraktor abaikan PTW, langkah?", a:["Kontraktor & PATK1 ambil tindakan","Tiada tindakan","JKKP sahaja","Amaran pekerja"], correct:0},
+  // 6-10: Peranan PATK1 / MyKKP
+  {
+    q: "Apakah peranan PATK1 dalam sistem MyKKP?",
+    a: [
+      "Mendaftar projek, kemas kini info & pantau kepatuhan ✅",
+      "Memantau kerja harian sahaja",
+      "Menguatkuasa undang-undang",
+      "Menyelia keselamatan pekerja secara fizikal sahaja"
+    ],
+    correct: 0
+  },
+  {
+    q: "Jika projek berskala kecil, adakah JKKP 12 tetap perlu didaftar?",
+    a: [
+      "Ya, semua projek wajib didaftar ✅",
+      "Tidak, hanya projek besar",
+      "Bergantung tempoh projek",
+      "Bergantung pekerja"
+    ],
+    correct: 0
+  },
+  {
+    q: "Siapakah yang perlu memantau pematuhan keselamatan di tapak bina?",
+    a: [
+      "Semua pihak terlibat di tapak ✅",
+      "Hanya kontraktor",
+      "Hanya pekerja",
+      "Tiada siapa"
+    ],
+    correct: 0
+  },
+  {
+    q: "Apakah risiko memulakan kerja tanpa pendaftaran JKKP 12?",
+    a: [
+      "Tindakan undang-undang & amaran ✅",
+      "Tiada risiko",
+      "Hanya amaran dalaman",
+      "Perlu pembetulan dalaman sahaja"
+    ],
+    correct: 0
+  },
+  {
+    q: "Apa makna PATK1 dalam MyKKP?",
+    a: [
+      "Wakil pendaftaran projek di MyKKP ✅",
+      "Penyelia tapak",
+      "Pegawai JKKP",
+      "Kontraktor"
+    ],
+    correct: 0
+  },
 
-    // 21-25 Situasi sebenar (case-based)
-    {q:"Situasi: Projek pindah lokasi, siapa perlu kemas kini MyKKP?", a:["PATK1","JKKP sahaja","Kontraktor","Subkontraktor"], correct:0},
-    {q:"Situasi: Audit tiba-tiba, PATK1 tidak hadir, apa tindakan?", a:["Kontraktor bertanggungjawab","Tiada tindakan","Hanya pekerja","JKKP tanggungjawab"], correct:0},
-    {q:"Situasi: Projek guna bahan bahaya, langkah keselamatan?", a:["Semua pihak ikut SOP","Hanya kontraktor","Hanya PATK1","Tiada siapa"], correct:0},
-    {q:"Situasi: Pekerja langgar PPE, apa langkah?", a:["Peringatan & catatan","Tiada tindakan","Tindakan JKKP","Hanya kontraktor"], correct:0},
-    {q:"Situasi: Kerja malam tanpa lampu, siapa patuhi SOP?", a:["Kontraktor & PATK1","Tiada tindakan","Hanya JKKP","Pekerja"], correct:0},
+  // 11-20: Akta & keperluan JKKP 12
+  {
+    q: "Jika subkontraktor langgar keselamatan, siapa boleh dikenakan tindakan?",
+    a: [
+      "Subkontraktor & kontraktor utama ✅",
+      "Subkontraktor sahaja",
+      "Kontraktor sahaja",
+      "Tiada tindakan"
+    ],
+    correct: 0
+  },
+  {
+    q: "Bilakah JKKP 12 perlu dikemas kini?",
+    a: [
+      "Jika info projek berubah ✅",
+      "Setiap bulan",
+      "Hanya audit",
+      "Tiada perlu"
+    ],
+    correct: 0
+  },
+  {
+    q: "Apakah tujuan Permit to Work (PTW) di tapak bina?",
+    a: [
+      "Memastikan kerja berisiko tinggi dikawal ✅",
+      "Gantikan JKKP12",
+      "Memantau kewangan projek",
+      "Hanya untuk kontraktor"
+    ],
+    correct: 0
+  },
+  {
+    q: "Siapakah bertanggungjawab keselamatan pekerja harian?",
+    a: [
+      "Kontraktor & PATK1 ✅",
+      "Hanya JKKP",
+      "Hanya klien",
+      "Tiada siapa"
+    ],
+    correct: 0
+  },
+  {
+    q: "Apa risiko jika JKKP 12 tidak dikemas kini?",
+    a: [
+      "Tindakan undang-undang ✅",
+      "Tiada risiko",
+      "Amaran sahaja",
+      "Hanya laporan dalaman"
+    ],
+    correct: 0
+  },
+  {
+    q: "Contoh situasi: Projek pindah lokasi, siapa perlu kemas kini?",
+    a: [
+      "PATK1 dalam MyKKP ✅",
+      "JKKP sahaja",
+      "Kontraktor sahaja",
+      "Subkontraktor"
+    ],
+    correct: 0
+  },
+  {
+    q: "Jika pekerja cedera di tapak bina, siapa laporan?",
+    a: [
+      "Kontraktor utama & PATK1 ✅",
+      "Hanya pekerja",
+      "JKKP",
+      "Subkontraktor"
+    ],
+    correct: 0
+  },
+  {
+    q: "Bagaimana memastikan projek patuh keselamatan?",
+    a: [
+      "Daftar JKKP12 & ikut prosedur ✅",
+      "Hanya pantau pekerja",
+      "Hanya audit",
+      "Tiada tindakan"
+    ],
+    correct: 0
+  },
+  {
+    q: "Jika projek tamat sebelum semak JKKP, apa tindakan?",
+    a: [
+      "Laporkan & lengkapkan rekod ✅",
+      "Tiada tindakan",
+      "Hanya simpan dokumen dalaman",
+      "Hanya amaran"
+    ],
+    correct: 0
+  },
+  {
+    q: "Situasi: Subkontraktor abaikan PTW, apa langkah?",
+    a: [
+      "Kontraktor & PATK1 ambil tindakan ✅",
+      "Tiada tindakan",
+      "JKKP sahaja",
+      "Amaran pekerja"
+    ],
+    correct: 0
+  },
 
-    // 26-30 Case-based tricky
-    {q:"Case: Projek besar & ramai subkontraktor, siapa koordinasi keselamatan?", a:["Kontraktor utama & PATK1","Hanya PATK1","JKKP sahaja","Tiada siapa"], correct:0},
-    {q:"Case: PATK1 baru ambil alih projek, tindakan pertama?", a:["Semak & kemas kini JKKP12","Mula kerja terus","Hanya pantau pekerja","Tiada tindakan"], correct:0},
-    {q:"Case: Pendaftaran salah tarikh, akibat?", a:["Tindakan undang-undang & kemaskini","Tiada tindakan","Amaran dalaman","Hanya laporan kontraktor"], correct:0},
-    {q:"Case: Subkontraktor lambat hadir kursus keselamatan, langkah?", a:["Jadual semula & catat dalam MyKKP","Tiada tindakan","Hanya amaran","Laporkan bulan depan"], correct:0},
-    {q:"Case: Projek terjejas cuaca, SOP patuh?", a:["Semua pihak ikut prosedur & lapor PATK1","Hanya kontraktor","Tiada tindakan","Hanya pekerja"], correct:0}
+  // 21-25: Soalan situasi (case-based)
+  {
+    q: "Situasi: Audit tiba-tiba, PATK1 tidak hadir, siapa bertanggungjawab?",
+    a: [
+      "Kontraktor bertanggungjawab ✅",
+      "Tiada tindakan",
+      "Hanya pekerja",
+      "JKKP"
+    ],
+    correct: 0
+  },
+  {
+    q: "Situasi: Projek guna bahan bahaya, siapa patuhi SOP?",
+    a: [
+      "Semua pihak di tapak ✅",
+      "Hanya kontraktor",
+      "Hanya PATK1",
+      "Tiada siapa"
+    ],
+    correct: 0
+  },
+  {
+    q: "Situasi: Projek lewat pendaftaran, akibat?",
+    a: [
+      "Tindakan undang-undang & amaran ✅",
+      "Tiada risiko",
+      "Hanya laporan dalaman",
+      "Tunggu kelulusan JKKP"
+    ],
+    correct: 0
+  },
+  {
+    q: "Situasi: PATK1 baru ambil alih projek, tindakan pertama?",
+    a: [
+      "Semak & kemas kini JKKP12 ✅",
+      "Mula kerja terus",
+      "Hanya pantau pekerja",
+      "Tiada tindakan"
+    ],
+    correct: 0
+  },
+  {
+    q: "Situasi: Projek besar & ramai subkontraktor, siapa koordinator keselamatan?",
+    a: [
+      "Kontraktor utama & PATK1 ✅",
+      "Hanya PATK1",
+      "JKKP sahaja",
+      "Tiada siapa"
+    ],
+    correct: 0
+  },
+
+  // 26-30: Case-based tricky
+  {
+    q: "Situasi: Pekerja tidak guna PPE, siapa perlu ambil tindakan?",
+    a: [
+      "Kontraktor & PATK1 ✅",
+      "Tiada tindakan",
+      "Hanya JKKP",
+      "Pekerja sendiri"
+    ],
+    correct: 0
+  },
+  {
+    q: "Situasi: Kerja malam tanpa lampu, siapa patuhi SOP?",
+    a: [
+      "Kontraktor & PATK1 ✅",
+      "Tiada tindakan",
+      "Hanya JKKP",
+      "Pekerja"
+    ],
+    correct: 0
+  },
+  {
+    q: "Situasi: Subkontraktor lambat hantar laporan keselamatan, siapa perlu ambil tindakan?",
+    a: [
+      "Kontraktor utama & PATK1 ✅",
+      "Tiada tindakan",
+      "Hanya PATK1",
+      "JKKP"
+    ],
+    correct: 0
+  },
+  {
+    q: "Situasi: PATK1 lupa kemas kini lokasi projek, akibat?",
+    a: [
+      "Tindakan undang-undang & amaran ✅",
+      "Tiada risiko",
+      "Hanya simpan rekod dalaman",
+      "Hanya laporan audit"
+    ],
+    correct: 0
+  },
+  {
+    q: "Situasi: Projek guna kontraktor baru tanpa notis, tindakan PATK1?",
+    a: [
+      "Semak & daftar dalam MyKKP ✅",
+      "Teruskan kerja",
+      "Hanya pantau pekerja",
+      "Tiada tindakan"
+    ],
+    correct: 0
+  }
 ];
 
 let current=0;
